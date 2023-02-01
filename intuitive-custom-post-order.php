@@ -242,7 +242,14 @@ class Hicpo
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-sortable' );
 			wp_enqueue_script( 'hicpojs', HICPO_URL.'/js/hicpo.js', array( 'jquery' ), null, true );
-			
+			wp_localize_script(
+				'hicpojs', // Handle
+				'hicpo', // Object name
+				array(
+					'url'     => admin_url( 'admin-ajax.php' ),
+					'nonce'   => wp_create_nonce( 'hicpo_validation' )
+				)
+			);
 			wp_enqueue_style( 'hicpo', HICPO_URL.'/css/hicpo.css', array(), null );
 		}
 	}
@@ -341,6 +348,10 @@ class Hicpo
 	
 	function update_menu_order()
 	{
+		if ( check_ajax_referer( 'hicpo_validation', 'security', false ) !== 1 ) {
+			wp_send_json_error( 'Invalid Request' );
+		}
+
 		global $wpdb;
 
 		parse_str( $_POST['order'], $data );
@@ -405,6 +416,10 @@ class Hicpo
 	
 	function update_menu_order_tags()
 	{
+		if ( check_ajax_referer( 'hicpo_validation', 'security', false ) !== 1 ) {
+			wp_send_json_error( 'Invalid Request' );
+		}
+
 		global $wpdb;
 		
 		parse_str( $_POST['order'], $data );
@@ -469,6 +484,10 @@ class Hicpo
 	
 	function update_menu_order_sites()
 	{
+		if ( check_ajax_referer( 'hicpo_validation', 'security', false ) !== 1 ) {
+			wp_send_json_error( 'Invalid Request' );
+		}
+		
 		global $wpdb;
 		
 		parse_str( $_POST['order'], $data );

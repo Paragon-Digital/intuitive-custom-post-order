@@ -7,10 +7,19 @@
 		'axis': 'y',
 		'helper': fixHelper,
 		'update' : function(e, ui) {
-			$.post( ajaxurl, {
+			$.post( hicpo.url, {
 				action: 'update-menu-order',
 				order: $('#the-list').sortable('serialize'),
-			});
+				security: hicpo.nonce,
+                },
+                function (response) {
+                    if (response.error) {
+                        console.error(response.data);
+                        alert('Order update failed. Please reload the page and try again.');
+                    } else if (!response.success) {
+                        console.error('Unable to update order.', response.data);
+                    }
+                });
 		}
 	});
 	//$("#the-list").disableSelection();
@@ -22,9 +31,18 @@
 		'axis': 'y',
 		'helper': fixHelper,
 		'update' : function(e, ui) {
-			$.post( ajaxurl, {
+			$.post( hicpo.url, {
 				action: 'update-menu-order-tags',
 				order: $('#the-list').sortable('serialize'),
+				security: hicpo.nonce,
+			},
+			function (response) {
+				if (response.error) {
+					console.error(response.data);
+					alert('Order update failed. Please reload the page and try again.');
+				} else if (!response.success) {
+					console.error('Unable to update order.', response.data);
+				}
 			});
 		}
 	});
@@ -56,9 +74,18 @@
 		'axis': 'y',
 		'helper': fixHelper,
 		'update' : function(e, ui) {
-			$.post( ajaxurl, {
+			$.post( hicpo.url, {
 				action: 'update-menu-order-sites',
 				order: $('#the-list').sortable('serialize'),
+				security: hicpo.nonce,
+			},
+			function (response) {
+				if (response.error) {
+					console.error(response.data);
+					alert('Order update failed. Please reload the page and try again.');
+				} else if (!response.success) {
+					console.error('Unable to update order.', response.data);
+				}
 			});
 		}
 	});
